@@ -240,40 +240,42 @@ async function finishTest(){
   }, 0);
   const maxScore = questions.length * 3;
 
-  // Classify using WASM or fallback
-  let cat = 'Error';
-  let advice = 'Skor tidak valid.';
-  let color = '#888888';
+  // Classify - always use JavaScript for reliability (WASM may not load on mobile)
+  let cat, advice, color;
+  
+  const t1 = Math.floor(maxScore * 0.25);
+  const t2 = Math.floor(maxScore * 0.50);
+  const t3 = Math.floor(maxScore * 0.75);
 
-  if(typeof classifyWasm === 'function'){
-    cat = classifyWasm(total, maxScore);
-  }else{
-    if(total < 0 || total > maxScore){
-      cat = 'Error'; advice = 'Skor tidak valid.'; color = '#888888';
-    } else if (total <= Math.floor(maxScore * 0.33)) {
-      cat = 'Baik'; advice = 'Pertahankan pola hidup sehat, teruskan refleksi diri.'; color = '#16a34a';
-    } else if (total <= Math.floor(maxScore * 0.66)) {
-      cat = 'Perlu Perhatian Ringan'; advice = 'Coba relaksasi, atur jadwal, dan cukup tidur.'; color = '#f59e0b';
-    } else {
-      cat = 'Disarankan Konsultasi'; advice = 'Pertimbangkan segera berkonsultasi dengan profesional.'; color = '#ef4444';
-    }
+  if (total < 0 || total > maxScore) {
+    cat = 'Error';
+    advice = 'Skor tidak valid.';
+    color = '#888888';
+  } else if (total <= t1) {
+    cat = 'Baik / Kondisi Stabil';
+    advice = 'Pertahankan pola hidup sehat, teruskan refleksi diri.';
+    color = '#16a34a';
+  } else if (total <= t2) {
+    cat = 'Perlu Perhatian Diri';
+    advice = 'Coba relaksasi, atur jadwal, dan cukup tidur.';
+    color = '#f59e0b';
+  } else if (total <= t3) {
+    cat = 'Butuh Konsultasi Ringan';
+    advice = 'Pertimbangkan konsultasi ringan dengan teman atau konselor.';
+    color = '#f97316';
+  } else {
+    cat = 'Butuh Konsultasi Profesional';
+    advice = 'Pertimbangkan segera berkonsultasi dengan profesional kesehatan mental.';
+    color = '#ef4444';
   }
-
-  const map = {
-    'Baik': { advice: 'Pertahankan pola hidup sehat, teruskan refleksi diri.', color: '#16a34a' },
-    'Perlu Perhatian Ringan': { advice: 'Coba relaksasi, atur jadwal, dan cukup tidur.', color: '#f59e0b' },
-    'Disarankan Konsultasi': { advice: 'Pertimbangkan segera berkonsultasi dengan profesional.', color: '#ef4444' },
-    'Error': { advice: 'Skor tidak valid.', color: '#888888' }
-  };
-  const picked = map[cat] || { advice, color };
 
   // Show result
   document.getElementById('resName').textContent = nameInput.value.trim() || '-';
   document.getElementById('resScore').textContent = total;
   const catEl = document.getElementById('resCategory');
   catEl.textContent = cat;
-  catEl.style.color = picked.color;
-  document.getElementById('resAdvice').textContent = picked.advice;
+  catEl.style.color = color;
+  document.getElementById('resAdvice').textContent = advice;
 
   // Save to backend or localStorage
   const historyItem = {
