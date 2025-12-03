@@ -1,12 +1,9 @@
-// ========================================
 // API Configuration
-// ========================================
 const API_BASE_URL = 'https://mentalhealthtest-production.up.railway.app';
 
 // Backend is deployed on Railway
 const USE_BACKEND = true;
 
-// ========================================
 // WASM init
 // ========================================
 let classifyWasm = null;
