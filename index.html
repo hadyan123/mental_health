@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cek Kesehatan Mental – SDG 3</title>
 
-  <!-- Tailwind (CDN) -->
+  <!-- Tailwind (CDN) + dark mode by class -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    };
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Custom styles for nav indicator, blobs, buttons, transitions -->
@@ -15,8 +20,7 @@
 <body class="min-h-screen bg-gradient-to-b from-emerald-100 via-emerald-50 to-white dark:from-emerald-950 dark:via-emerald-900 dark:to-emerald-950">
 
   <!-- Header -->
- <header class="sticky top-0 z-40 bg-emerald-50/80 dark:bg-emerald-900/80 backdrop-blur border-b border-emerald-200 dark:border-emerald-700">
-
+  <header class="sticky top-0 z-40 bg-emerald-50/80 dark:bg-emerald-900/80 backdrop-blur border-b border-emerald-200 dark:border-emerald-700">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-2">
         <div class="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-700 flex items-center justify-center text-xs text-white shadow-md">
@@ -27,13 +31,26 @@
         </span>
       </div>
 
-      <nav id="mainNav" class="relative flex gap-2 text-sm sm:text-[0.92rem]">
+      <nav id="mainNav" class="relative flex items-center gap-2 text-sm sm:text-[0.92rem]">
         <span id="navIndicator"></span>
         <button class="nav-link text-emerald-700 dark:text-emerald-200" data-nav="home">Home</button>
         <button class="nav-link text-emerald-700 dark:text-emerald-200" data-nav="test">Tes</button>
         <button class="nav-link text-emerald-700 dark:text-emerald-200" data-nav="history">Riwayat</button>
         <button class="nav-link text-emerald-700 dark:text-emerald-200" data-nav="about">Tentang</button>
 
+        <!-- Theme Toggle -->
+        <button
+          id="themeToggle"
+          class="ml-3 flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold
+                 border border-emerald-300/70 dark:border-emerald-700
+                 bg-white/80 dark:bg-emerald-800/70
+                 text-emerald-700 dark:text-emerald-100
+                 hover:bg-emerald-50 dark:hover:bg-emerald-700
+                 transition-all duration-200"
+        >
+          <span id="themeToggleIcon">🌙</span>
+          <span id="themeToggleText">Dark</span>
+        </button>
       </nav>
     </div>
   </header>
@@ -122,7 +139,7 @@
 
       <!-- Info cards -->
       <div class="grid md:grid-cols-3 gap-6">
-       <div class="card bg-emerald-50/80 dark:bg-emerald-900/80 border border-emerald-200 dark:border-emerald-700 p-6 relative overflow-hidden">
+        <div class="card bg-emerald-50/80 dark:bg-emerald-900/80 border border-emerald-200 dark:border-emerald-700 p-6 relative overflow-hidden">
           <div class="absolute -right-3 -top-3 text-2xl opacity-10">①</div>
           <h3 class="font-semibold mb-1 text-emerald-900 dark:text-emerald-100">Deskripsi</h3>
           <p class="text-sm text-emerald-800 dark:text-emerald-200">
@@ -355,5 +372,50 @@
   <!-- WASM wrapper + app logic -->
   <script src="scorer.js"></script>
   <script src="script.js"></script>
+
+  <!-- Theme toggle script -->
+  <script>
+    const THEME_KEY = 'mh_theme';
+    const themeBtn = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeToggleIcon');
+    const themeText = document.getElementById('themeToggleText');
+
+    function applyTheme(theme) {
+      const root = document.documentElement;
+      if (theme === 'dark') {
+        root.classList.add('dark');
+        themeIcon.textContent = '🌙';
+        themeText.textContent = 'Dark';
+      } else {
+        root.classList.remove('dark');
+        themeIcon.textContent = '☀️';
+        themeText.textContent = 'Light';
+      }
+      try {
+        localStorage.setItem(THEME_KEY, theme);
+      } catch {}
+    }
+
+    (function () {
+      let saved = null;
+      try {
+        saved = localStorage.getItem(THEME_KEY);
+      } catch {}
+
+      if (saved === 'dark' || saved === 'light') {
+        applyTheme(saved);
+      } else if (window.matchMedia &&
+                 window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        applyTheme('dark');
+      } else {
+        applyTheme('light');
+      }
+    })();
+
+    themeBtn?.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      applyTheme(isDark ? 'light' : 'dark');
+    });
+  </script>
 </body>
 </html>
