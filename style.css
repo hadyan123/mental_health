@@ -10,7 +10,15 @@
   --text-dark: #ecfdf5;
 }
 
-/* Mode toggle */
+/* Background utama: SELALU cerah */
+body {
+  background: linear-gradient(to bottom, #d1fae5, #ecfdf5, #ffffff);
+  color: var(--text);
+}
+
+/* Mode toggle: kalau nanti mau dipakai manual silakan,
+   tapi tidak ada efek apa-apa sekarang karena kita tidak
+   menambah class light-mode / dark-mode ke body */
 body.light-mode {
   background: linear-gradient(to bottom, #d1fae5, #ecfdf5, #ffffff);
   color: var(--text);
@@ -54,7 +62,7 @@ body.dark-mode {
   height: 3px;
   border-radius: 999px;
   background: linear-gradient(90deg, var(--primary), var(--primary-soft));
-  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1), width 0.3s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.15s ease-out;
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1), width 0.3s cubic-bezier(0.22, 0.61, 1), opacity 0.15s ease-out;
   opacity: 0;
 }
 
@@ -84,11 +92,11 @@ body.dark-mode {
 }
 @keyframes floatBlob1 {
   from { transform: translateY(0) translateX(0); }
-  to { transform: translateY(20px) translateX(-30px); }
+  to   { transform: translateY(20px) translateX(-30px); }
 }
 @keyframes floatBlob2 {
   from { transform: translateY(0) translateX(0); }
-  to { transform: translateY(-25px) translateX(30px); }
+  to   { transform: translateY(-25px) translateX(30px); }
 }
 
 /* Heart illustration */
@@ -120,11 +128,11 @@ body.dark-mode {
   animation: heartbeat 1.65s ease-in-out infinite;
 }
 @keyframes heartbeat {
-  0% { transform: scale(1); }
-  15% { transform: scale(1.12); }
-  30% { transform: scale(0.98); }
-  45% { transform: scale(1.08); }
-  60% { transform: scale(1); }
+  0%   { transform: scale(1); }
+  15%  { transform: scale(1.12); }
+  30%  { transform: scale(0.98); }
+  45%  { transform: scale(1.08); }
+  60%  { transform: scale(1); }
   100% { transform: scale(1); }
 }
 .heart-particle {
@@ -136,14 +144,14 @@ body.dark-mode {
   opacity: 0;
   animation: heartParticle 4s linear infinite;
 }
-.heart-particle:nth-child(1) { top: 40%; left: -4px; animation-delay: 0.4s; }
+.heart-particle:nth-child(1) { top: 40%; left: -4px;  animation-delay: 0.4s; }
 .heart-particle:nth-child(2) { top: 14%; right: 18px; animation-delay: 1s; }
 .heart-particle:nth-child(3) { bottom: 16%; left: 26px; animation-delay: 1.8s; }
 .heart-particle:nth-child(4) { bottom: 6%; right: 12px; animation-delay: 2.4s; }
 @keyframes heartParticle {
-  0% { opacity: 0; transform: translateY(6px) scale(0.2); }
-  25% { opacity: 1; transform: translateY(-10px) scale(0.9); }
-  70% { opacity: 1; transform: translateY(-30px) scale(1); }
+  0%   { opacity: 0; transform: translateY(6px)  scale(0.2); }
+  25%  { opacity: 1; transform: translateY(-10px) scale(0.9); }
+  70%  { opacity: 1; transform: translateY(-30px) scale(1); }
   100% { opacity: 0; transform: translateY(-45px) scale(0.4); }
 }
 
@@ -196,23 +204,4 @@ body.dark-mode {
 /* Footer */
 footer {
   background-color: var(--bg-light);
-}
-
-/* Dark mode otomatis */
-@media (prefers-color-scheme: dark) {
-  body {
-    background: linear-gradient(to bottom, #064e3b, #065f46, #022c22);
-    color: var(--text-dark);
-  }
-  .card {
-    background-color: var(--card-dark);
-    border-color: #065f46;
-  }
-  .btn-main {
-    box-shadow: 0 12px 30px rgba(16, 185, 129, 0.3);
-  }
-  footer {
-    background-color: #065f46;
-    color: #d1fae5;
-  }
 }
