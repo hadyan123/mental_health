@@ -69,9 +69,7 @@ window.addEventListener('resize', ()=>{
   if(current) moveIndicatorTo(current);
 });
 
-// ========================================
 // Questions (20 items)
-// ========================================
 const questions = [
   { text: "Saya merasa cemas tanpa alasan yang jelas.", reverse: false },
   { text: "Saya kesulitan tidur atau sering terbangun di malam hari.", reverse: false },
@@ -430,9 +428,7 @@ function drawTrend(rows){
   });
 }
 
-// ========================================
 // Export & Clear
-// ========================================
 document.getElementById('exportCsv').addEventListener('click', async ()=>{
   let rows = [];
   
@@ -482,9 +478,7 @@ document.getElementById('clearAll').addEventListener('click', async ()=>{
   renderHistory();
 });
 
-// ========================================
 // Initialize
-// ========================================
 show('home');
 
 // Check backend connection on load
